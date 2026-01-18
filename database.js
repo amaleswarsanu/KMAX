@@ -1,6 +1,7 @@
 const Database = require('better-sqlite3');
 const path = require('path');
 const db = new Database(path.join(__dirname, 'kmax.db'));
+db.pragma('foreign_keys = ON');
 
 // Initialize Database Schema
 db.exec(`
