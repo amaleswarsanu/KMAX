@@ -39,11 +39,10 @@ if (movieCount === 0) {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
-    // Default movies removed to prevent reappearing on server restart.
-    // To add permanent movies, use the Admin Portal (Note: on Render Free Tier, these will reset daily)
-    // or uncomment and edit the lines below to seed specific movies.
+    // Seed Data: REQUIRED for Render Free Tier (Ephemeral Storage)
+    // Since the filesystem resets, we must re-insert default movies on every restart 
+    // to ensure the site isn't empty.
 
-    /*
     insertMovie.run(
         "Interstellar",
         "Sci-Fi",
@@ -57,7 +56,20 @@ if (movieCount === 0) {
         "2D, IMAX",
         JSON.stringify(["Matthew McConaughey", "Anne Hathaway"])
     );
-    */
+
+    insertMovie.run(
+        "Dune: Part Two",
+        "Sci-Fi/Adventure",
+        4.9,
+        "166 min",
+        "Paul Atreides unites with Chani and the Fremen while on a warpath of revenge against the conspirators.",
+        "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=2070&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1541963463532-d68292c34b19?q=80&w=1976&auto=format&fit=crop",
+        60,
+        30,
+        "2D, IMAX 3D",
+        JSON.stringify(["Timothée Chalamet", "Zendaya"])
+    );
 }
 
 module.exports = db;
