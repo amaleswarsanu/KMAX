@@ -26,7 +26,7 @@ db.exec(`
         total REAL,
         date TEXT,
         time TEXT,
-        FOREIGN KEY (movie_id) REFERENCES movies(id)
+        FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE
     );
 `);
 
