@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMAX Cinema - Experience the Unimaginable</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PDF and Barcode Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bwip-js@3.0.4/dist/bwip-js-min.js"></script>
+</head>
+
+<body>
+    <div id="app" class="mobile-app">
+        <!-- Top Header (Mobile) -->
+        <header class="mobile-header">
+            <div class="logo">
+                <span class="kmax">KMAX</span> <span class="cinema">CINEMA</span>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
+                <div class="user-avatar-small"></div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="main-content">
+            <!-- Content will be injected here by JavaScript -->
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="#" onclick="showHome(event)" class="nav-item active">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+            <a href="#movies" onclick="showHome(event)" class="nav-item">
+                <i class="fa-solid fa-film"></i>
+                <span>Movies</span>
+            </a>
+            <a href="#tickets" onclick="showTickets(event)" class="nav-item">
+                <i class="fa-solid fa-ticket"></i>
+                <span>Tickets</span>
+            </a>
+            <a href="#profile" onclick="showProfile(event)" class="nav-item">
+                <i class="fa-solid fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
+
+        <!-- Booking Modal (Hidden by default) -->
+        <div id="booking-modal" class="modal hidden">
+            <div class="modal-content mobile-modal">
+                <div class="modal-header">
+                    <button class="back-btn"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h3>Select Seats</h3>
+                </div>
+                <div id="booking-interface"></div>
+            </div>
+        </div>
+
+        <!-- Success Modal (Hidden by default) -->
+        <div id="success-modal" class="modal hidden">
+            <div class="modal-content success-view">
+                <div class="success-animation">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h2>Booking Successful!</h2>
+                <p>Your tickets have been booked successfully. You can download your ticket PDF below.</p>
+                <div id="ticket-preview" class="ticket-preview"></div>
+                <div class="success-btns">
+                    <button id="download-ticket-btn" class="primary-btn">Download PDF</button>
+                    <button onclick="closeSuccessModal()" class="secondary-btn">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

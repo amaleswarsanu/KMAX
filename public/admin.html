@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMAX Admin Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Admin Specific Overrides */
+        body {
+            background-color: #0a0a0a;
+            padding-top: 0;
+        }
+
+        .admin-navbar {
+            background: #121212;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-container {
+            padding: 2rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 2rem;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 2rem;
+            border: 2px dashed var(--glass-border);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 1rem;
+            background: var(--surface-color-hover);
+        }
+
+        .file-upload-label:hover {
+            border-color: var(--primary-color);
+            background: rgba(138, 43, 226, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+            background: var(--surface-color);
+            color: white;
+            font-family: var(--font-main);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 1rem;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            color: var(--text-color);
+            background: var(--primary-color);
+            font-weight: 600;
+            box-shadow: 0 5px 15px var(--primary-glow);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="admin-navbar">
+        <div class="logo">
+            <span class="kmax">KMAX</span> <span class="cinema">ADMIN</span>
+        </div>
+        <a href="index.html" class="icon-btn" title="Go to Website"><i class="fa-solid fa-external-link-alt"></i> View
+            Site</a>
+    </nav>
+
+    <div class="admin-container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('manual')">Manual Upload</button>
+            <button class="tab-btn" onclick="switchTab('imdb')">Import from IMDb</button>
+            <button class="tab-btn" onclick="switchTab('verify')">Verify Ticket</button>
+            <button class="tab-btn" onclick="switchTab('bookings')">Bookings Log</button>
+        </div>
+
+        <div class="admin-grid">
+            <!-- Add Movie Form -->
+            <div class="admin-card">
+                <!-- Manual Upload Form -->
+                <div id="manual-form">
+                    <h3>Add New Movie</h3>
+                    <div class="form-group">
+                        <label>Movie Poster</label>
+                        <label for="movie-poster" class="file-upload-label">
+                            <i class="fa-solid fa-cloud-upload-alt"
+                                style="font-size: 2rem; margin-bottom: 1rem;"></i><br>
+                            <span id="file-name">Click to upload image</span>
+                        </label>
+                        <input type="file" id="movie-poster" accept="image/*" style="display: none"
+                            onchange="handleImageUpload(this)">
+                    </div>
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" id="movie-title" placeholder="e.g. The Matrix">
+                    </div>
+                    <div class="form-group">
+                        <label>Genre</label>
+                        <input type="text" id="movie-genre" placeholder="e.g. Sci-Fi/Action">
+                    </div>
+                    <div class="form-group">
+                        <label>Rating</label>
+                        <input type="number" id="movie-rating" step="0.1" min="0" max="10" placeholder="e.g. 8.7">
+                    </div>
+                    <div class="form-group">
+                        <label>Ticket Price ($)</label>
+                        <input type="number" id="movie-price" value="15">
+                    </div>
+                    <button onclick="addManualMovie()" class="add-btn" style="width: 100%; margin-top: 1rem;">Add
+                        Movie</button>
+                </div>
+
+                <!-- IMDb Import Form (Hidden by default) -->
+                <div id="imdb-form" class="hidden">
+                    <h3>Import from IMDb</h3>
+                    <div class="imdb-search-box">
+                        <input type="text" id="imdb-query" placeholder="Paste IMDb Link or Title">
+                        <button onclick="searchIMDb()" class="icon-btn primary"><i
+                                class="fa-solid fa-search"></i></button>
+                    </div>
+                    <div id="imdb-preview" class="hidden">
+                        <img id="preview-poster" src="" alt="Preview">
+                        <div class="preview-info">
+                            <h4 id="preview-title"></h4>
+                            <p id="preview-meta"></p>
+                            <button onclick="addMovieFromPreview()" class="add-btn">Add to Theater</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ticket Verification Section -->
+                <div id="verify-form" class="hidden">
+                    <h3>Ticket Verification</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Enter the Booking ID
+                        or scan the barcode to confirm the ticket.</p>
+                    <div class="imdb-search-box">
+                        <input type="text" id="ticket-id-input" placeholder="e.g. KMAX-XXXXXXX">
+                        <button onclick="verifyTicket()" class="icon-btn primary"><i
+                                class="fa-solid fa-barcode"></i></button>
+                    </div>
+                    <div id="ticket-result" class="hidden"
+                        style="margin-top: 2rem; padding: 1.5rem; border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);">
+                        <!-- Result will be shown here -->
+                    </div>
+                </div>
+
+                <!-- Bookings Dashboard -->
+                <div id="bookings-view" class="hidden">
+                    <h3>All Bookings</h3>
+                    <div style="overflow-x: auto;">
+                        <table
+                            style="width: 100%; border-collapse: collapse; margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid var(--glass-border); text-align: left;">
+                                    <th style="padding: 1rem;">ID</th>
+                                    <th style="padding: 1rem;">Movie</th>
+                                    <th style="padding: 1rem;">Date/Time</th>
+                                    <th style="padding: 1rem;">Seats</th>
+                                    <th style="padding: 1rem;">Total</th>
+                                    <th style="padding: 1rem;">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bookings-table-body">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Existing Movies List -->
+            <div class="admin-card">
+                <h3>Current Movies</h3>
+                <div id="admin-movie-list" class="admin-movie-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+
+</html>
