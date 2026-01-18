@@ -20,6 +20,7 @@ db.exec(`
         cast TEXT
     );
 
+    DROP TABLE IF EXISTS bookings;
     CREATE TABLE IF NOT EXISTS bookings (
         id TEXT PRIMARY KEY,
         movie_id INTEGER,
