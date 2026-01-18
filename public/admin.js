@@ -281,7 +281,8 @@ window.deleteMovie = async (id) => {
                 alert('Movie deleted successfully');
                 await renderAdminMovies();
             } else {
-                alert('Failed to delete movie');
+                const errorData = await response.json();
+                alert('Failed to delete movie: ' + (errorData.error || response.statusText));
             }
         } catch (error) {
             console.error('Error deleting movie:', error);
